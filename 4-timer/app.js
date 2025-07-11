@@ -1,34 +1,52 @@
-const montsEl = document.getElementById("monts");
+const monthsEl = document.getElementById("monts");
 const daysEl = document.getElementById("days");
 const hoursEl = document.getElementById("hours");
 const minutesEl = document.getElementById("minutes");
 const secondsEl = document.getElementById("seconds");
 
+const now = new Date();
+const nextYear = now.getFullYear() + 1;
+const nextYearDate = new Date(nextYear, 0, 1);
 
-console.log([montsEl, daysEl, hoursEl, minutesEl, secondsEl]);
+const diffTime = nextYearDate.getTime() - now.getTime();
 
-const nextYearTime = new Date(2026).getTime();
+const getCountMonth = (target) => {
+    let currentDate = new Date();
+    let targetDate = new Date(target);
+    let month = 0;
 
-const setViewTime = (timeFinish) => {
-    montsEl.textContent = `${Intl.DateTimeFormat('ru-RU', {
-            month: 'numeric'
-        }).format(timeFinish - new Date().getTime())} месяцев,`;
-    daysEl.textContent = `${Intl.DateTimeFormat('ru-RU', {
-            day: 'numeric'
-        }).format(timeFinish - new Date().getTime())} дней,`;
-    hoursEl.textContent = `${Intl.DateTimeFormat('ru-RU', {
-            hour: 'numeric'
-        }).format(timeFinish - new Date().getTime())} часов,`;
-    minutesEl.textContent = `${Intl.DateTimeFormat('ru-RU', {
-            minute: 'numeric'
-        }).format(timeFinish - new Date().getTime())} минут,`;
-    secondsEl.textContent = `${Intl.DateTimeFormat('ru-RU', {
-            second: 'numeric'
-        }).format(timeFinish - new Date().getTime())} секунд,`;
+    while (currentDate < targetDate){
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        if (currentDate <= targetDate){
+            month += 1;
+        }
+    }
+     
+     return month;   
 }
 
-setViewTime(nextYearTime);
-const interval = setInterval(() => {
-    setViewTime(nextYearTime);
-}, 1000);
+const calcDate = (nextYearDate) => {
+    const months = getCountMonth(nextYearDate);
+    const now = new Date();
+        
+    now.setMonth(now.getMonth() + months);
+    
+    let diffTime = nextYearDate.getTime() - now.getTime();
+    
+    const days = Math.floor(diffTime / (24 * 60 * 60 * 1000));
+    diffTime -= days * (24 * 60 * 60 * 1000);
+    const hours = Math.floor(diffTime / (60 * 60 * 1000));
+    diffTime -= hours * (60 * 60 * 1000);
+    const minutes = Math.floor(diffTime / (60 * 1000));
+    diffTime -= minutes * (60 * 1000);
+    const seconds = Math.floor(diffTime / 1000);
+    
+    console.log(months, days, hours, minutes, seconds);
+    
+}
+
+// # реалиовать рендер с плдпиской по колличеству временной величины (месяц - месяцев)
+
+calcDate(nextYearDate)
+
 
