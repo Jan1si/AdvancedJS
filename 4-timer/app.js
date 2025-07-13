@@ -28,13 +28,15 @@ const getCountMonth = (target) => {
      return month;   
 }
 
-const calcDate = (nextYearDate) => {
-    const now = new Date();
-    const months = getCountMonth(nextYearDate);
-        
-    now.setMonth(now.getMonth() + months);
+const calcDate = (currentDate, nextYearDate) => {
     
-    let diffTime = nextYearDate.getTime() - now.getTime();
+    const now = currentDate;
+    const months = getCountMonth(nextYearDate);
+    
+    const dateAfterAddingMouth = new Date(now);
+    dateAfterAddingMouth.setMonth(now.getMonth() + months);
+    
+    let diffTime = nextYearDate.getTime() - dateAfterAddingMouth.getTime();
     
     const days = Math.floor(diffTime / (24 * 60 * 60 * 1000));
     diffTime -= days * (24 * 60 * 60 * 1000);
@@ -44,11 +46,10 @@ const calcDate = (nextYearDate) => {
     diffTime -= minutes * (60 * 1000);
     const seconds = Math.floor(diffTime / 1000);
     
-     return {months, days, hours, minutes, seconds};
+    return {months, days, hours, minutes, seconds};
     
 }
 
-// # реалиовать рендер с плдпиской по колличеству временной величины (месяц - месяцев)
 
 const getLabelDate = (date, label) => {
     const plura = pluraDate.select(date);
@@ -63,7 +64,7 @@ const getLabelDate = (date, label) => {
 }
 
 const render = () => {
-    const {months, days, hours, minutes, seconds} = calcDate(nextYearDate);
+    const {months, days, hours, minutes, seconds} = calcDate(new Date(), nextYearDate);
     monthsEl.textContent = `${months} ${getLabelDate(months, "month")}, ` ;
     daysEl.textContent = `${days} ${getLabelDate(days, "day")}, `;
     hoursEl.textContent = `${hours} ${getLabelDate(hours, "hour")}, `;
