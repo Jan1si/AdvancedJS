@@ -29,14 +29,35 @@ ork.punch(character)
 
 const Elf = function(race, name, language, spell) {
     Character.call(this, race, name, language);
-    this.spell = spell;
+    this.spells = [];
 }
 // наследование прототипа Персонажа прототипу Эльф
 Elf.prototype = Object.create(Character.prototype);
-Elf.prototype.castSpell = function(enemy) {
-    console.log(`${this.name} использует заклинание ${this.spell} по персонажу ${enemy.name}`);
+Elf.prototype.createSpell = function(nameSpell) {
+    if (this.spells.find(spell => spell == nameSpell)){
+        console.log("Такое заклинание уже есть");
+        return;
+    }
+    this.spells.push(nameSpell);
+    console.log(`${this.name} создал заклинание ${nameSpell}`)
+    console.log(`Все доступные заклинания ${this.spells.join(', ')}`);
+    
+}
+Elf.prototype.castSpell = function(selectSpell, enemy) {
+    if (!this.spells.find(spell => spell == selectSpell)) {
+        console.log(`У ${this.name} нет такого заклинания`);
+        return;
+    }
+    console.log(`${this.name} использует заклинание ${selectSpell} по персонажу ${enemy.name}`);
+    
 }
 const elf = new Elf("Эльф", "Крутой эльф", "Эльфийский", "Снежная буря");
 
 elf.talk();
-elf.castSpell(ork);
+elf.createSpell("Огненый шар");
+
+elf.createSpell("Снежная буря")
+elf.createSpell("Цепная молния")
+elf.createSpell("Огненый шар");
+
+elf.castSpell("Огненый шар", ork);
