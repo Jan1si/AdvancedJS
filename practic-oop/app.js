@@ -59,3 +59,30 @@ newWizard.createNewMagicSpell("Снежная буря");
 newWizard.createNewMagicSpell("Цепная молния");
 newWizard.createNewMagicSpell("Огненый шар");
 newWizard.castSpell("Огненый шар")
+
+const Warrior = function(race, name, language, createAt, weapon, strength){
+    Character.call(this, race, name, language, createAt);
+    this.weapon = weapon;
+    this.strength = strength;
+}
+Warrior.prototype = Object.create(Character.prototype);
+
+Warrior.prototype.attack = function(){
+        console.log(`${this.name} атакует оружием ${this.weapon} с силой в ${this.strength} единиц!`);
+}
+Warrior.prototype.train = function(hours){
+        const ratio = Number.parseFloat((Math.random() * 0.9 - 0.1).toFixed(2));
+        const bonusStrength = Number.parseFloat((this.strength * ratio) * hours);
+        this.strength = Number.parseInt(this.strength) + bonusStrength;
+        const hoursPluraKey = new Intl.PluralRules("ru-RU").select(hours);
+        const objPlurals = { one: {hours: "час"}, few: {hours: "часа"}, many: {hours: "часов"} }
+        console.log(`${this.name} тренировался ${hours} ${objPlurals[hoursPluraKey].hours} и увеличил свою силу до ${this.strength}`);
+}
+
+const newWarrior = new Warrior("Орк", "Тралл", "Орочий", new Date(2020, 6, 1), "Топор", "40");
+
+newWarrior.attack();
+newWarrior.train(10);
+newWarrior.speak();
+newWarrior.showAge();
+newWarrior.attack();
