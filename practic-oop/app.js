@@ -196,9 +196,9 @@ Traveler.prototype.showTravelHistory = function(){
 const newTraveler = new Traveler("Гном", "Сигвард", "Катаринский", new Date(2025, 1, 5));
 newTraveler.speak();
 newTraveler.showAge()
-newTraveler.visit("Лордерон", new Date(2022, 6, 12, 12, 7));
-newTraveler.visit("Луносвет", new Date(2023, 3, 22, 16, 2));
-newTraveler.visit("Огриммар", new Date(2023, 5, 15, 9, 0));
+newTraveler.visit("Лордерон", new Date());
+newTraveler.visit("Луносвет", new Date());
+newTraveler.visit("Огриммар", new Date());
 newTraveler.showTravelHistory();
 
 const TimeKeeper = function(){}
