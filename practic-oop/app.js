@@ -52,13 +52,13 @@ Wizard.prototype.castSpell = function(nameSpell) {
 }
 
 const newWizard = new Wizard("Эльф", "Кель`тас", "Эльфийский", new Date(2018, 4, 2), 40);
-newWizard.speak();
-newWizard.createNewMagicSpell("Огненый шар");
-newWizard.createNewMagicSpell("Леденая стрела");
-newWizard.createNewMagicSpell("Снежная буря");
-newWizard.createNewMagicSpell("Цепная молния");
-newWizard.createNewMagicSpell("Огненый шар");
-newWizard.castSpell("Огненый шар")
+// newWizard.speak();
+// newWizard.createNewMagicSpell("Огненый шар");
+// newWizard.createNewMagicSpell("Леденая стрела");
+// newWizard.createNewMagicSpell("Снежная буря");
+// newWizard.createNewMagicSpell("Цепная молния");
+// newWizard.createNewMagicSpell("Огненый шар");
+// newWizard.castSpell("Огненый шар")
 
 const Warrior = function(race, name, language, createAt, weapon, strength){
     Character.call(this, race, name, language, createAt);
@@ -81,8 +81,94 @@ Warrior.prototype.train = function(hours){
 
 const newWarrior = new Warrior("Орк", "Тралл", "Орочий", new Date(2020, 6, 1), "Топор", "40");
 
-newWarrior.attack();
-newWarrior.train(10);
-newWarrior.speak();
-newWarrior.showAge();
-newWarrior.attack();
+// newWarrior.attack();
+// newWarrior.train(10);
+// newWarrior.speak();
+// newWarrior.showAge();
+// newWarrior.attack();
+
+const Merchant = function(race, name, language, createAt, gold, tradeLevel){
+    Character.call(this, race, name, language, createAt);
+    this.inventory = [];
+    this.gold = gold;
+    this.tradeLevel = tradeLevel;
+}
+Merchant.prototype = Object.create(Character.prototype);
+/// доделать !!!
+Merchant.prototype.sell = function(sellingItem){
+    const foundItem = this.inventory.find(item => item.name == sellingItem);
+    
+    if (!foundItem){
+        console.log(`Товара ${sellingItem} у вас нет!`);
+        return;
+    }
+
+    const calcSellPrice = Math.round(foundItem.price + (foundItem.price * (this.tradeLevel / 100)));
+
+    if (foundItem.count <= 1){
+        this.inventory = this.inventory.filter(item => item.name !== sellingItem);
+    }
+
+    foundItem.count -= 1;
+    this.gold += calcSellPrice;
+
+    console.log(`Вы продали предмет ${sellingItem} по цене ${calcSellPrice} ваше текущее золото ${this.gold}`);
+    
+}
+
+Merchant.prototype.buy = function(buyingItem, price){
+    const calcBuyPrice = Math.round(price - (price * (this.tradeLevel / 100)));
+    if(!this.inventory.find(yourItem => yourItem.name == buyingItem)){
+        if (this.gold >= calcBuyPrice) {
+            this.inventory.push({name: buyingItem, count: 1, price: price});
+            this.gold = Number.parseInt(this.gold) - calcBuyPrice;
+            console.log(`Вы преобрели товар ${buyingItem} по цене с учётом навыка ${calcBuyPrice}. Ваше золото:${this.gold}`);
+        } else {
+            console.log(`Недостаточно денег! Ваш баланс ${this.gold} золота, цена товара ${buyingItem} с учётом навыка равна ${calcBuyPrice} золота`);
+        }
+        return;
+    } 
+    this.inventory.map(item => {
+        if (item.name == buyingItem) {
+            if (this.gold >= price){
+                item.count += 1;
+                this.gold = Number.parseInt(this.gold) - calcBuyPrice;
+                console.log(`Такой предмет у вас есть ${buyingItem}, увелививаю его колличесво, теперь их ${item.count}. У вас осталось ${this.gold} золота!`);
+            } else {
+                console.log(`Недостаточно денег! Ваш баланс ${this.gold} золота, цена товара ${buyingItem} равна ${calcBuyPrice} золота!`);
+            }
+        }
+    });
+}
+Merchant.prototype.showInventory = function(){
+    if (!this.inventory.length) {
+        console.log("Нет товаров!");
+    }
+    for (const item of this.inventory){
+        for (const key in item) {
+            console.log(`${key} - ${item[key]}`);
+        }
+    }
+}
+
+const newMerchant = new Merchant("Человек", "Томас", "Русский", new Date(2006, 2, 12), 1000, 5);
+
+// newMerchant.showInventory();
+// newMerchant.buy("Яблоко", 5);
+// newMerchant.buy("Яблоко", 5);
+// newMerchant.buy("Яблоко", 5);
+// newMerchant.buy("Яблоко", 5);
+// newMerchant.buy("Меч", 55);
+// newMerchant.buy("Алмаз", 5500);
+// newMerchant.showInventory();
+// console.log("---------");
+// newMerchant.sell("Меч");
+// newMerchant.sell("Груша");
+
+// newMerchant.sell("Яблоко");
+// newMerchant.sell("Яблоко");
+
+// newMerchant.showInventory();
+
+const Traveler = function(){}
+const TimeKeeper = function(){}
