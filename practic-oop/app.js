@@ -170,5 +170,35 @@ const newMerchant = new Merchant("Человек", "Томас", "Русский
 
 // newMerchant.showInventory();
 
-const Traveler = function(){}
+const Traveler = function(race, name, language, createAt){
+    Character.call(this, race, name, language, createAt);
+    this.visitedPlaces = [];
+}
+Traveler.prototype = Object.create(Character.prototype);
+
+Traveler.prototype.visit = function(place, date) {
+    const formatedDate = new Intl.DateTimeFormat("ru-RU", {
+        year: "numeric",
+        month:"long",
+        day: "numeric",
+        hour:'numeric',
+        minute:'numeric'
+    }).format(date);
+    this.visitedPlaces.push({place: place, date: formatedDate});
+}
+
+Traveler.prototype.showTravelHistory = function(){
+    for (const item of this.visitedPlaces){
+        console.log(`${this.name} ${item.date} посещал ${item.place}.`);
+    }
+}
+
+const newTraveler = new Traveler("Гном", "Сигвард", "Катаринский", new Date(2025, 1, 5));
+newTraveler.speak();
+newTraveler.showAge()
+newTraveler.visit("Лордерон", new Date(2022, 6, 12, 12, 7));
+newTraveler.visit("Луносвет", new Date(2023, 3, 22, 16, 2));
+newTraveler.visit("Огриммар", new Date(2023, 5, 15, 9, 0));
+newTraveler.showTravelHistory();
+
 const TimeKeeper = function(){}
