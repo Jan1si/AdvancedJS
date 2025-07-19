@@ -181,8 +181,8 @@ Traveler.prototype.visit = function(place, date) {
         year: "numeric",
         month:"long",
         day: "numeric",
-        hour:'numeric',
-        minute:'numeric'
+        hour:"numeric",
+        minute:"numeric"
     }).format(date);
     this.visitedPlaces.push({place: place, date: formatedDate});
 }
@@ -201,4 +201,67 @@ newTraveler.visit("Луносвет", new Date());
 newTraveler.visit("Огриммар", new Date());
 newTraveler.showTravelHistory();
 
-const TimeKeeper = function(){}
+const TimeKeeper = function(race, name, language, createAt){
+    Character.call(this, race, name, language, createAt)
+    this.timeStamps = [];
+}
+TimeKeeper.prototype = Object.create(Character.prototype);
+
+TimeKeeper.prototype.markTime = function(){
+    const now = new Date();
+    this.timeStamps.push(now);
+    console.log(`${this.name} установил временную метку в ${Intl.DateTimeFormat("ru-RU", {
+        year: "numeric",
+        month:"long",
+        day: "numeric",
+        hour:"numeric",
+        minute:"numeric",
+        second: "numeric"
+    }).format(now)}`);
+}
+
+TimeKeeper.prototype.showTimeStamps = function() {
+    for (const timeMark of this.timeStamps) {
+        console.log(`Все временные метки ${new Intl.DateTimeFormat("ru-RU", {
+            year: "numeric",
+            month:"long",
+            day: "numeric",
+            hour:"numeric",
+            minute:"numeric",
+            second: "numeric"
+        }).format(timeMark)}`);
+    }
+}
+
+TimeKeeper.prototype.timeSinceLastMark = function(){
+    const lastTimeMark = this.timeStamps[this.timeStamps.length - 1]
+    const now = new Date();
+    const diffTime = now.getTime() - new Date(`${lastTimeMark}`);
+    const totalPassSeconds = Math.floor(diffTime / 1000);
+    const secondPluraKey = new Intl.PluralRules("ru-RU").select(totalPassSeconds);
+    const objPlurals = {
+        one: {second: "секунда"},
+        few: {second: "секунды"},
+        many: {second: "секунд"}
+    };
+    console.log(`С последней созданной метки прошло ${totalPassSeconds} ${objPlurals[secondPluraKey].second}`);
+}
+
+const newTimeKeeper = new TimeKeeper("Человек", "Игорь", "Испанский", new Date(2017, 8, 10));
+let time = 4000;
+newTimeKeeper.speak();
+
+const interval = setInterval(() => {
+    time -= 1000;
+    newTimeKeeper.markTime();
+    if (time <= 0){
+        clearInterval(interval);
+        newTimeKeeper.showTimeStamps();
+        setTimeout(() => {
+            newTimeKeeper.timeSinceLastMark();
+        },5000);
+    }
+}, 2000);
+
+
+
