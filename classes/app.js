@@ -118,10 +118,36 @@ class Teacher extends Person{
             if (studentSpells.length === 0){
                 console.log(`Студент ${student.name} пока не знает заклинаний!`);
                 return;
-            }
+            };
             console.log(`Студент ${student.name} знает заклинания: ${studentSpells.join(", ")}`);
         });
     };
+
+    exam(studentName){
+        if (!this.#students.has(studentName)){
+            console.log(`У учителя ${this.name} нет такого студента!`);
+            return;
+        };
+        console.log('Начало экзамена!');
+        
+        const foundStudent = this.#students.get(studentName);
+        const spellsStudet = Array.from(foundStudent.spells);
+        let attempt = 0;
+
+        const interval = setInterval(() => {
+            const randomIndexSpell = Math.floor(Math.random() * spellsStudet.length);
+            console.log(foundStudent.castSpell(spellsStudet[randomIndexSpell]));
+            attempt += 1;
+            if (attempt === 5) {
+                console.log('Конец экзамена!');
+                
+                clearInterval(interval);
+            } 
+        }, 1000);
+
+        
+    }
+
     speak(){
         super.speak();
         console.log('Я преподователь Академии!')
@@ -136,4 +162,6 @@ console.log(teacher.addStudent(student3));
 console.log(teacher.addStudent(student));
 teacher.listStudents();
 teacher.speak();
+teacher.exam('Кирилл');
+
 // Тестирование класса Teacher
