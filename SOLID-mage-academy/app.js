@@ -1,0 +1,46 @@
+'use strict';
+
+class IPersonBehavior {
+    constructor(){
+        if (new.target === IPersonBehavior) {
+            throw new Error("Вы пытаетесь создать абстрактынй класс IPersonBehavior!");
+        }
+    }
+    speak(){}
+    describe(){}
+}
+class Person {
+    name;
+    age;
+    #createdAt;
+    #id;
+    #notes;
+
+    constructor(name, age) {
+        if (new.target === Person) {
+            throw new Error("Вы пытаетесь создать абстрактынй класс Person!")
+        }
+        this.name = name;
+        this.age = age;
+        this.#createdAt = new Date();
+        this.#id = Math.random().toString(36).slice(2);
+        this.#notes = [];
+    }
+
+    get id(){
+        return this.#id;
+    }
+   
+
+    addNote(note){
+        if (typeof note !== "string"){
+            return false;
+        }
+        this.#notes.push(note);
+        return true;
+    }
+    getNotes() {
+        return this.#notes;
+    }
+    describe(){}
+}
