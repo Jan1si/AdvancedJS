@@ -6,12 +6,18 @@ class IPersonBehavior {
             throw new Error("Вы пытаетесь создать абстрактынй класс IPersonBehavior!");
         }
     }
-    speak(){}
-    describe(){}
+    speak(){
+        throw new Error('Метод "speak" должен быть реализован!');
+    }
+    describe(){
+        throw new Error('Метод "describe" должен быть реализован!');
+    }
 }
-class Person {
+class Person extends IPersonBehavior{
     name;
     age;
+    studyPass;
+    role;
     #createdAt;
     #id;
     #notes;
@@ -20,6 +26,7 @@ class Person {
         if (new.target === Person) {
             throw new Error("Вы пытаетесь создать абстрактынй класс Person!")
         }
+        super();
         this.name = name;
         this.age = age;
         this.#createdAt = new Date();
@@ -31,7 +38,6 @@ class Person {
         return this.#id;
     }
    
-
     addNote(note){
         if (typeof note !== "string"){
             return false;
@@ -42,5 +48,123 @@ class Person {
     getNotes() {
         return this.#notes;
     }
-    describe(){}
+    describe(){
+        return (`${this.role}\nИмя - ${this.name}\nВозраст - ${this.age}`);
+    }
 }
+
+class Student extends Person{
+    #spells;
+    constructor(name, age) {
+        super(name, age);
+        this.studyPass = true;
+        this.role = 'Студент';
+        this.#spells = new Set();
+    }
+    addSpell(nameSpell){
+        if (!this.#spells.has(nameSpell)){
+            console.log(`${this.role} ${this.name} изучил новое заклинание ${nameSpell}!`);
+            this.#spells.add(nameSpell);
+            return true;
+        }
+        console.log(`${this.role} ${this.name} уже знает это заклинание ${nameSpell}!`);
+        return false;
+    }
+    get spells(){
+        return Array.from(this.#spells);
+    }
+    speak(){
+        return (`Привет! Меня зовут ${this.name}`);
+    }
+}
+
+const student1 = new Student("Иван", 20);
+const student2 = new Student("Степан", 17);
+const student3 = new Student("Мария", 22);
+const student4 = new Student("Светлана", 15);
+
+class Guest extends Person {
+    constructor(name, age){
+        super(name, age);
+        this.studyPass = false;
+        this.role = 'Гость';
+    }
+     speak(){
+        return (`Здравствуйте! Меня зовут ${this.name}, я пришёл как гость!`);
+    }
+}
+
+const gues1 = new Guest("Игнат", 14);
+const gues2 = new Guest("София", 12);
+
+class Teacher extends Person{
+    #students;
+    constructor(name, age){
+        super(name, age);
+        this.studyPass = false;
+        this.role = 'Учитель';
+        this.#students = new Map();
+    }
+
+    addStudent(student){
+        if (this.#students.has(student.name)){
+            console.log(`Студент ${student.name} уже обучается у этого учителя!`);
+            return false;
+        }
+        if (!student.studyPass){
+            console.log(`У нас учатся только студенты академии!`);
+            return false;
+        }
+        this.#students.set(student.name, student);
+        return true;
+    }
+
+    removeStudent(student){
+         if (this.#students.has(student.name)){
+            this.#students.delete(student.name);
+            return true;
+        }
+        console.log(`Такого студента ${student.name} нет у этого учителя!`);
+        return false;
+    }
+
+    get students(){
+        return Array.from(this.#students.keys());
+    }
+
+    speak(){
+        return (`Здравствуйте! Меня зовут ${this.name}`);
+    }
+}
+
+
+const teacher1 = new Teacher("Евгений", 34);
+const teacher2 = new Teacher("Ксения", 40);
+
+console.log(teacher1.speak());
+console.log(teacher1.describe());
+console.log(teacher2.speak());
+console.log(teacher2.describe());
+
+console.log(teacher1.addStudent(gues1));
+console.log(teacher1.addStudent(gues2));
+console.log(teacher1.addStudent(student1));
+console.log(teacher1.addStudent(student2));
+console.log(teacher1.students);
+
+class Event {
+    title;
+    durationMin;
+    participants;
+    #startedAt;
+    constructor(title, durationMin){
+        this.title = title;
+        this.durationMin = durationMin;
+        this.participants = new Set();
+    }
+    start(){
+    }
+    end(){
+    }
+}
+
