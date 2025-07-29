@@ -99,11 +99,16 @@ const gues2 = new Guest("София", 12);
 
 class Teacher extends Person{
     #students;
+    #event;
     constructor(name, age){
         super(name, age);
         this.studyPass = false;
         this.role = 'Учитель';
         this.#students = new Map();
+    }
+
+    get students(){
+        return [...this.#students.keys()];
     }
 
     addStudent(student){
@@ -128,8 +133,17 @@ class Teacher extends Person{
         return false;
     }
 
-    get students(){
-        return Array.from(this.#students.keys());
+    createEvent(event){
+         if (!event){
+            throw new Error('Вы не передали активность!')
+         }
+         
+        this.#event = event;
+        return true;
+    }
+
+    get event(){
+        return this.#event;
     }
 
     speak(){
@@ -155,16 +169,49 @@ console.log(teacher1.students);
 class Event {
     title;
     durationMin;
-    participants;
+    #participants;
     #startedAt;
     constructor(title, durationMin){
+        if (title === undefined || durationMin === undefined){
+            throw new Error('Не заданы начальные свойства!')
+        }
         this.title = title;
         this.durationMin = durationMin;
-        this.participants = new Set();
+        this.#participants = new Set();
     }
+
+    get participants(){
+        return Array.from(this.#participants);
+    }
+
+    addParticipants(participant){
+        this.#participants.add(participant);
+        return true;
+    }
+    
     start(){
+        console.log("start");
     }
+
     end(){
+        console.log("end");
     }
+
+    simulate(){}
 }
+
+class EventLogger{
+    static startEvent(event){}
+    static endEvent(event){}
+}
+
+console.log(teacher1.createEvent(new Event('Открытый урок', 1)));
+teacher1.event.addParticipants(student1);
+teacher1.event.addParticipants(student2);
+teacher1.event.addParticipants(student3);
+teacher1.event.addParticipants(gues1);
+teacher1.event.addParticipants(gues2);
+teacher1.event.start();
+console.log(teacher1.event.participants);
+
 
