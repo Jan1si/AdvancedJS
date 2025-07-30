@@ -277,14 +277,17 @@ console.log(teacher1.addStudent(student2));
 console.log(teacher1.students);
 
 console.log('---------------------------');
-const event1 = new Event('event 1', 5);
-event1.addParticipant(student1);
-event1.addParticipant(gues1);
-event1.start();
-event1.simulate();
+// const event1 = new Event('event 1', 5);
+// event1.addParticipant(student1);
+// event1.addParticipant(gues1);
+// event1.start();
+// event1.simulate();
 // event1.end();
 class StudyClass extends Event {
-
+    constructor(title, duracionMin){
+        super(title, duracionMin);
+        
+    }
 }
 
 class Meeting extends Event {
