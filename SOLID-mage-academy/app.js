@@ -13,6 +13,129 @@ class IPersonBehavior {
         throw new Error('Метод "describe" должен быть реализован!');
     }
 }
+
+class IEventBehavior{
+    constructor(){
+        if (new.target === IEventBehavior){
+            throw new Error("Вы пытаетесь создать абстрактынй класс IEventBehavior!");
+        }
+    }
+    start(){
+        throw new Error('Метод "start" должен быть реализован!')
+    }
+    simulate(){
+        throw new Error('Метод "simulate" должен быть реализован!');
+    }
+    end(){
+        throw new Error('Метод "end" должен быть реализован!');
+    }
+    addParticipant(){
+        throw new Error('Метод "addParticipant" должен быть реализован!');
+    }
+    logParticipant(){
+        throw new Error('Метод "logParticipant" должен быть реализован!');
+    }
+}
+
+class EventLogger{
+    static logStart(event) {
+        console.group();
+            console.log(`Началось событие "${event.title}". Время на событие ${event.duracionMin} мин`);
+            console.group();
+                console.log('Список участников события:');
+                [...event.logParticipant()].forEach(p => {
+                    console.log(p + ';');
+                });
+            console.groupEnd()
+        console.groupEnd();
+    }
+
+    static logEnd(event){
+        console.group();
+            console.log(`Событие "${event.title}" завешилось`);
+            const passTime = Date.now() - event.startedAt;
+            console.log(`Событие длилось ${new Intl.DateTimeFormat('ru-RU', {minute: 'numeric', second: 'numeric'}).format(passTime)}`);
+        console.groupEnd()
+    }
+}
+
+class Event extends IEventBehavior{
+    #title;
+    #duracionMin;
+    #participants = new Set();
+    #isPrivate;
+    #startedAt;
+    #interval;
+    #timeout;
+    constructor(title, duracionMin){
+        if (new.target === Event) {
+            throw new Error("Вы пытаетесь создать абстрактынй класс Person!")
+        }
+        super();
+        this.#title = title;
+        this.#duracionMin = duracionMin;
+    }
+
+    get title(){
+        return this.#title
+    };
+
+    get duracionMin(){
+        return this.#duracionMin
+    };
+
+    get startedAt(){
+        return this.#startedAt
+    };
+
+    addParticipant(person){
+        if (this.#isPrivate) {
+            if (!person.studyPass){
+                console.log(`Это событие только для студентов!`);
+                return false;
+            }
+        }
+        this.#participants.add(person);
+        return true;
+    }
+
+    logParticipant(){
+        return [...this.#participants].map(p => {            
+            return p.name;
+        });
+    }
+
+    start(){
+        this.#startedAt = Date.now();
+        EventLogger.logStart(this);
+    }
+
+    end(){
+        clearInterval(this.#interval);
+        clearTimeout(this.#timeout);
+        EventLogger.logEnd(this);
+    }
+
+    simulate() {
+
+        if (!this.#startedAt){
+            console.log(`Вы не начали событие! Вызовите метод "start()" чтобы начать событие!`);
+            return false;
+        }
+
+        let diffTime = this.#startedAt + (this.#duracionMin * 60 * 1000) - this.#startedAt;
+
+        this.#interval = setInterval(() => {
+            diffTime -= 1000;
+            console.log(`осталось ${new Intl.DateTimeFormat('ru-RU', {minute: 'numeric', second:'numeric'}).format(diffTime)}`);
+        }, 1000);
+
+        this.#timeout = setTimeout(() => {
+            this.end();
+        }, 1000 * 60 * this.#duracionMin); 
+    
+    }
+}
 class Person extends IPersonBehavior{
     name;
     age;
@@ -133,19 +256,6 @@ class Teacher extends Person{
         return false;
     }
 
-    createEvent(event){
-         if (!event){
-            throw new Error('Вы не передали активность!')
-         }
-         
-        this.#event = event;
-        return true;
-    }
-
-    get event(){
-        return this.#event;
-    }
-
     speak(){
         return (`Здравствуйте! Меня зовут ${this.name}`);
     }
@@ -166,52 +276,18 @@ console.log(teacher1.addStudent(student1));
 console.log(teacher1.addStudent(student2));
 console.log(teacher1.students);
 
-class Event {
-    title;
-    durationMin;
-    #participants;
-    #startedAt;
-    constructor(title, durationMin){
-        if (title === undefined || durationMin === undefined){
-            throw new Error('Не заданы начальные свойства!')
-        }
-        this.title = title;
-        this.durationMin = durationMin;
-        this.#participants = new Set();
-    }
+console.log('---------------------------');
+const event1 = new Event('event 1', 5);
+event1.addParticipant(student1);
+event1.addParticipant(gues1);
+event1.start();
+event1.simulate();
+// event1.end();
+class StudyClass extends Event {
 
-    get participants(){
-        return Array.from(this.#participants);
-    }
-
-    addParticipants(participant){
-        this.#participants.add(participant);
-        return true;
-    }
-    
-    start(){
-        console.log("start");
-    }
-
-    end(){
-        console.log("end");
-    }
-
-    simulate(){}
 }
 
-class EventLogger{
-    static startEvent(event){}
-    static endEvent(event){}
+class Meeting extends Event {
+
 }
-
-console.log(teacher1.createEvent(new Event('Открытый урок', 1)));
-teacher1.event.addParticipants(student1);
-teacher1.event.addParticipants(student2);
-teacher1.event.addParticipants(student3);
-teacher1.event.addParticipants(gues1);
-teacher1.event.addParticipants(gues2);
-teacher1.event.start();
-console.log(teacher1.event.participants);
-
 
