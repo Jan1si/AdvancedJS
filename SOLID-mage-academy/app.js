@@ -3,7 +3,7 @@
 class IPersonBehavior {
     constructor(){
         if (new.target === IPersonBehavior) {
-            throw new Error("Вы пытаетесь создать абстрактынй класс IPersonBehavior!");
+            throw new Error("Вы пытаетесь создать абстрактный класс IPersonBehavior!");
         }
     }
     speak(){
@@ -17,7 +17,7 @@ class IPersonBehavior {
 class IEventBehavior{
     constructor(){
         if (new.target === IEventBehavior){
-            throw new Error("Вы пытаетесь создать абстрактынй класс IEventBehavior!");
+            throw new Error("Вы пытаетесь создать абстрактный класс IEventBehavior!");
         }
     }
     start(){
@@ -68,9 +68,9 @@ class Event extends IEventBehavior{
     #interval;
     #timeout;
     constructor(title, duracionMin){
-        if (new.target === Event) {
-            throw new Error("Вы пытаетесь создать абстрактынй класс Person!")
-        }
+        // if (new.target === Event) {
+        //     throw new Error("Вы пытаетесь создать абстрактный класс Event!")
+        // }
         super();
         this.#title = title;
         this.#duracionMin = duracionMin;
@@ -105,15 +105,15 @@ class Event extends IEventBehavior{
         });
     }
 
-    start(){
+    start(logger){
         this.#startedAt = Date.now();
-        EventLogger.logStart(this);
+        logger.logStart(this);
     }
 
-    end(){
+    end(logger){
         clearInterval(this.#interval);
         clearTimeout(this.#timeout);
-        EventLogger.logEnd(this);
+        logger.logEnd(this);
     }
 
     simulate() {
@@ -147,7 +147,7 @@ class Person extends IPersonBehavior{
 
     constructor(name, age) {
         if (new.target === Person) {
-            throw new Error("Вы пытаетесь создать абстрактынй класс Person!")
+            throw new Error("Вы пытаетесь создать абстрактный класс Person!")
         }
         super();
         this.name = name;
@@ -277,12 +277,12 @@ console.log(teacher1.addStudent(student2));
 console.log(teacher1.students);
 
 console.log('---------------------------');
-// const event1 = new Event('event 1', 5);
-// event1.addParticipant(student1);
-// event1.addParticipant(gues1);
-// event1.start();
-// event1.simulate();
-// event1.end();
+const event1 = new Event('event 1', 5);
+event1.addParticipant(student1);
+event1.addParticipant(gues1);
+event1.start(EventLogger);
+event1.simulate();
+event1.end(EventLogger);
 class StudyClass extends Event {
     constructor(title, duracionMin){
         super(title, duracionMin);
