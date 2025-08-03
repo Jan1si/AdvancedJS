@@ -1,4 +1,3 @@
-'use strict'
 
 export class IEventSimulator {
     start(event){

@@ -1,4 +1,3 @@
-'use strict';
 import { Person } from "../../core/Person.js";
 
 export class Guest extends Person {

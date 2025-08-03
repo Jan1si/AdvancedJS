@@ -6,6 +6,8 @@ import { Guest } from "./entities/Person/Guest.js";
 import { Event } from "./core/Event.js";
 import { EventLogger } from "./core/EventLogger.js";
 import { EventSimulator } from "./core/EventSimulator.js";
+import { Meeting } from "./entities/Events/Meeting.js";
+import { Exam } from "./entities/Events/Exam.js";
 
 const student1 = new Student("Иван", 20);
 const student2 = new Student("Степан", 17);
@@ -31,6 +33,31 @@ console.log(teacher1.addStudent(student2));
 console.log(teacher1.students);
 
 console.log('---------------------------');
+const meeting1 = new Meeting('meeting 1', .2);
+const exam1 = new Exam('exam1', .1);
+const eventSimulator = new EventSimulator(new EventLogger());
+
+// meeting1.addParticipant(student1);
+// meeting1.addParticipant(student2);
+// meeting1.addParticipant(gues1);
+// meeting1.addParticipant(gues2);
+
+// exam1.addParticipant(student1);
+// exam1.addParticipant(student2);
+// exam1.addParticipant(student3);
+// exam1.addParticipant(student4);
+
+// eventSimulator.start(exam1);
+// eventSimulator.simulate(exam1);
+
+// eventSimulator.start(meeting1);
+// eventSimulator.simulate(meeting1);
+// setTimeout(() => {
+//     eventSimulator.end(meeting1);
+// }, 2000);
+
+
+
 // const event1 = new Event('event 1', .1);
 // const event2 = new Event('event 2', .2);
 

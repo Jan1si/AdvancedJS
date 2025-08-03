@@ -1,6 +1,5 @@
-'use strict';
  
-import { IPersonBehavior } from './IPersonBehavior.js'
+import { IPersonBehavior } from '../interfaces/IPersonBehavior.js'
 
 export class Person extends IPersonBehavior{
     name;

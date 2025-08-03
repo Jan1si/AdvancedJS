@@ -1,4 +1,3 @@
-'use strict';
 
 export class IEventLogger {
     static logParticipants(event){

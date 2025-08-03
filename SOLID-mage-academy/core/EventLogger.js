@@ -1,6 +1,5 @@
-'use strict';
 
-import { IEventLogger } from './IEventLogger.js'
+import { IEventLogger } from '../interfaces/IEventLogger.js'
 
 export class EventLogger extends IEventLogger{
 

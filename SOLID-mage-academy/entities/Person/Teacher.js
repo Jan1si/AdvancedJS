@@ -1,4 +1,3 @@
-'use strict';
 
 import { Person } from "../../core/Person.js";
 
@@ -15,6 +14,10 @@ export class Teacher extends Person{
 
     get students(){
         return [...this.#students.values()].map(s => s.name);
+    }
+
+    createEvent(event){
+
     }
 
     addStudent(student){
