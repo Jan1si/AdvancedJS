@@ -1,13 +1,16 @@
 'use strict';
 
-import { Teacher } from "./entities/Person/Teacher.js";
-import { Student } from "./entities/Person/Student.js";
-import { Guest } from "./entities/Person/Guest.js";
+import { Teacher } from "./entities/Persons/Teacher.js";
+import { Student } from "./entities/Persons/Student.js";
+import { Guest } from "./entities/Persons/Guest.js";
 import { Event } from "./core/Event.js";
 import { EventLogger } from "./core/EventLogger.js";
 import { EventSimulator } from "./core/EventSimulator.js";
 import { Meeting } from "./entities/Events/Meeting.js";
 import { Exam } from "./entities/Events/Exam.js";
+import { MagicItemsStorage } from "./entities/Storages/MagicItemsStorage.js";
+import { Hungry } from "./entities/StatusEffect/Hungry.js";
+import {AcademyStatistics} from './static/AcademyStatistics.js';
 
 const student1 = new Student("Иван", 20);
 const student2 = new Student("Степан", 17);
@@ -33,9 +36,65 @@ console.log(teacher1.addStudent(student2));
 console.log(teacher1.students);
 
 console.log('---------------------------');
-const meeting1 = new Meeting('meeting 1', .2);
-const exam1 = new Exam('exam1', .1);
-const eventSimulator = new EventSimulator(new EventLogger());
+// const eventSimulator = new EventSimulator(new EventLogger());
+// teacher1.createEvent(new Exam('exam1', .2));
+// teacher1.createEvent(new Exam('exam2', .4));
+// teacher1.createEvent(new Exam('exam3', .3));
+// teacher1.createEvent(new Meeting('meeting1', .6));
+// teacher1.createEvent(new Meeting('meeting2', .5));
+// teacher1.createEvent(new Meeting('meeting3', .4));
+// teacher1.getEvent('exam1').addParticipant(student1);
+// teacher1.getEvent('exam1').addParticipant(student2);
+// teacher1.getEvent('exam1').addParticipant(student3);
+// eventSimulator.start(teacher1.getEvent('exam1'));
+// eventSimulator.simulate(teacher1.getEvent('exam1'));
+
+const stor = new MagicItemsStorage();
+
+stor.giveItem(student1, 'pencil');
+stor.giveItem(student1, 'pencil2');
+stor.giveItem(student1, 'pencil3');
+stor.giveItem(student2, 'pencil');
+
+console.log(stor.getItems(student1));
+console.log(stor.getItems(student2));
+
+
+const status = new Hungry();
+
+status.apply(student1);
+status.apply(student2);
+status.apply(gues1);
+
+console.log(status.has(student1));
+console.log(status.has(student3));
+console.log(status.has(student2));
+console.log(status.has(gues1));
+console.log(status.has(gues2));
+
+console.log(AcademyStatistics.report());
+
+
+const string = "fireball(3) fireball(3) fireball(3)";
+// while((math = pattern.exec(string)) !== null){
+//     res.push({name: math[1], level: math[2]});
+// }
+
+class SpellParser {
+    #regEx = new RegExp(/(\w+)\((\d)\)/g);
+    #spellObjArray = [];
+    parse(string){
+        let math = this.#regEx.exec(string);
+        while (math !== null){
+            this.#spellObjArray.push({name: math[1], level: math[2]});
+            math = this.#regEx.exec(string)
+        }
+        return this.#spellObjArray
+    }
+}
+
+const spellParser = new SpellParser();
+console.log(spellParser.parse(string));
 
 // meeting1.addParticipant(student1);
 // meeting1.addParticipant(student2);

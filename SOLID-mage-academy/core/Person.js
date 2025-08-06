@@ -1,5 +1,6 @@
  
 import { IPersonBehavior } from '../interfaces/IPersonBehavior.js'
+import { AcademyStatistics } from '../static/AcademyStatistics.js';
 
 export class Person extends IPersonBehavior{
     name;
@@ -19,7 +20,8 @@ export class Person extends IPersonBehavior{
         this.age = age;
         this.#createdAt = new Date();
         this.#id = Math.random().toString(36).slice(2);
-        this.#notes = [];
+        this.#notes = [];    
+        AcademyStatistics.register(this);
     }
 
     get id(){

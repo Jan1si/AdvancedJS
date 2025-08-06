@@ -4,12 +4,13 @@ import { Person } from "../../core/Person.js";
 
 export class Teacher extends Person{
     #students;
-    #event;
+    #events;
     constructor(name, age){
         super(name, age);
         this.studyPass = false;
         this.role = 'Учитель';
         this.#students = new Map();
+        this.#events = [];
     }
 
     get students(){
@@ -17,7 +18,19 @@ export class Teacher extends Person{
     }
 
     createEvent(event){
+        this.#events.push(event);
+    }
 
+    getEvent(title){
+        if (!this.#events.some(e => e.title === title)){
+            throw new Error(`События ${title} нет в списке событий у учителя!`);
+        }
+        const event = this.#events.find(e => e.title === title);
+        return event;
+    }
+
+    showEvents(){
+        return this.#events.map(e => e.title);
     }
 
     addStudent(student){
