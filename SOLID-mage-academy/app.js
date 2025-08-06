@@ -11,6 +11,7 @@ import { Exam } from "./entities/Events/Exam.js";
 import { MagicItemsStorage } from "./entities/Storages/MagicItemsStorage.js";
 import { Hungry } from "./entities/StatusEffect/Hungry.js";
 import {AcademyStatistics} from './static/AcademyStatistics.js';
+import { SpellParser } from "./core/SpellParser.js";
 
 const student1 = new Student("Иван", 20);
 const student2 = new Student("Степан", 17);
@@ -80,21 +81,10 @@ const string = "fireball(3) fireball(3) fireball(3)";
 //     res.push({name: math[1], level: math[2]});
 // }
 
-class SpellParser {
-    #regEx = new RegExp(/(\w+)\((\d)\)/g);
-    #spellObjArray = [];
-    parse(string){
-        let math = this.#regEx.exec(string);
-        while (math !== null){
-            this.#spellObjArray.push({name: math[1], level: math[2]});
-            math = this.#regEx.exec(string)
-        }
-        return this.#spellObjArray
-    }
-}
 
 const spellParser = new SpellParser();
 console.log(spellParser.parse(string));
+console.log(spellParser.format([{name: 'fireball', level: '3'}, {name: 'fireball', level: '3'}, {name: 'fireball', level: '3'}]));
 
 // meeting1.addParticipant(student1);
 // meeting1.addParticipant(student2);
