@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.todo-block{
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    width: 50vh;
+    padding: 10px;
+    box-shadow: 1px 1px 8px 2px rgb(189, 189, 189);
+    border-radius: 7px;
+}
+.todo-list{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.todo-item{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid black;
+}
+
+.todo-p{
+    flex: 1;
+    font-size: 15px;
+    font-family:Arial, Helvetica, sans-serif;
+    color: rgb(55, 55, 55);
+}
+.todo-checkbox{
+    width: 20px;
+    height: 20px;
+    accent-color: rgb(249, 141, 83);
+}
+.get-todo-btn{
+    margin-top: 20px;
+    width: fit-content;
+    background: none;
+    outline: none;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 3px 15px;
+    border: 2px solid rgb(59, 59, 59);
+    color: rgb(59, 59, 59);
+    border-radius: 5px;
+    background: rgb(185, 242, 131);
+}
+
+.create-todo-block{
+    margin-top: 20px;
+    box-shadow: 1px 1px 8px 2px rgb(189, 189, 189);
+    width: 50vh;
+    padding: 10px;
+    border-radius: 5px;
+}
+.create-todo-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.create-todo-form>input[name="title"]{
+    padding: 5px 7px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.create-todo-form>input[name="title"]::placeholder{
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: .4;
+    font-size: 12px;
+}
+
+.create-todo-form>label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+.create-todo-form>button[type="submit"]{
+    width: fit-content;
+    padding: 5px 7px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+}
